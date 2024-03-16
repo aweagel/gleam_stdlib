@@ -7,13 +7,14 @@
     wrap_list/1, string_ends_with/2, string_pad/4, decode_map/1, uri_parse/1,
     bit_array_int_to_u32/1, bit_array_int_from_u32/1, decode_result/1,
     bit_array_slice/3, decode_bit_array/1, compile_regex/2, regex_scan/2,
-    percent_encode/1, percent_decode/1, regex_check/2, regex_split/2,
-    base_decode64/1, parse_query/1, bit_array_concat/1, size_of_tuple/1,
-    decode_tuple/1, decode_tuple2/1, decode_tuple3/1, decode_tuple4/1,
-    decode_tuple5/1, decode_tuple6/1, tuple_get/2, classify_dynamic/1, print/1,
-    println/1, print_error/1, println_error/1, inspect/1, float_to_string/1,
-    int_from_base_string/2, utf_codepoint_list_to_string/1, contains_string/2,
-    crop_string/2, base16_decode/1, string_replace/3
+    regex_replace/3, percent_encode/1, percent_decode/1, regex_check/2,
+    regex_split/2, base_decode64/1, parse_query/1, bit_array_concat/1,
+    size_of_tuple/1, decode_tuple/1, decode_tuple2/1, decode_tuple3/1,
+    decode_tuple4/1, decode_tuple5/1, decode_tuple6/1, tuple_get/2,
+    classify_dynamic/1, print/1, println/1, print_error/1, println_error/1,
+    inspect/1, float_to_string/1, int_from_base_string/2,
+    utf_codepoint_list_to_string/1, contains_string/2, crop_string/2,
+    base16_decode/1, string_replace/3
 ]).
 
 %% Taken from OTP's uri_string module
@@ -254,6 +255,17 @@ regex_scan(Regex, String) ->
         {match, Captured} -> lists:map(fun(X) -> regex_matches(String, X) end, Captured);
         nomatch -> []
     end.
+
+regex_replace(String, Regex, Replacement) ->
+    re:replace(String, Regex, Replacement, [global, {return, binary}]).
+
+regex_replace_n(String, Regex, Replacement, N) ->
+    Options = [global, {return, binary}, {replace, N}],
+    re:replace(String, Regex, Replacement, Options).
+
+regex_replace_map(String, Regex, ReplaceFun) ->
+    Options = [global, {return, binary}],
+    re:replace(String, Regex, fun(Match) -> ReplaceFun(Match) end, Options).
 
 base_decode64(S) ->
     try {ok, base64:decode(S)}

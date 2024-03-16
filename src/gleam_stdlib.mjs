@@ -420,6 +420,20 @@ export function regex_scan(regex, string) {
   return List.fromArray(matches);
 }
 
+export function regex_replace(string, regex, replacement) {
+  return string.replace(regex, replacement);
+}
+
+export function regex_replace_n(string, regex, replacement, n) {
+  return string.replace(regex, replacement, n);
+}
+
+export function regex_replace_map(string, regex, replaceFn) {
+  return string.replace(regex, function(match, ...groups) {
+    return replaceFn(match, ...groups);
+  });
+}
+
 export function new_map() {
   return Dict.new();
 }

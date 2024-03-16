@@ -199,3 +199,21 @@ pub fn scan(with regex: Regex, content string: String) -> List(Match) {
 @external(erlang, "gleam_stdlib", "regex_scan")
 @external(javascript, "../gleam_stdlib.mjs", "regex_scan")
 fn do_scan(a: Regex, b: String) -> List(Match)
+
+/// Replaces all matches of the regular expression with the given replacement string.
+///
+/// ## Examples
+///
+/// ```gleam
+/// let assert Ok(re) = from_string("w.+d")
+/// replace(in: "Hello, world! The world is big.", regex: re, with: "Gleam")
+/// // -> "Hello, Gleam! The Gleam is big."
+/// ```
+///
+pub fn replace(in string: String, each pattern: Regex, with substitute: String) -> String {
+  do_replace(string, pattern, substitute)
+}
+
+@external(erlang, "gleam_stdlib", "regex_replace")
+@external(javascript, "../gleam_stdlib.mjs", "regex_replace")
+fn do_replace(string: String, pattern: Regex, substitute: String) -> String

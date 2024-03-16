@@ -152,3 +152,49 @@ pub fn scan_test() {
   regex.scan(re, "const age = 32")
   |> should.equal([])
 }
+
+pub fn replace_test() {
+  let assert Ok(re) = regex.from_string("l")
+  regex.replace(in: "Hello, world!", each: re, with: "x")
+  |> should.equal("Hexxo, worxd!")
+
+  let assert Ok(re) = regex.from_string("xyz")
+  regex.replace(in: "Hello, world!", each: re, with: "Gleam")
+  |> should.equal("Hello, world!")
+
+  let assert Ok(re) = regex.from_string("Gleam")
+  regex.replace(in: "", each: re, with: "Rust")
+  |> should.equal("")
+
+  let assert Ok(re) = regex.from_string("Gleam")
+  regex.replace(in: "I love Gleam!", each: re, with: "")
+  |> should.equal("I love !")
+}
+
+pub fn replace_n_test() {
+  let assert Ok(re) = regex.from_string("\\d+")
+  regex.replace_n(in: "abc 123 abc 123 abc 123 abc 123", each: re, with: "xyz", up_to: 2)
+  |> should.equal("abc xyz abc xyz abc 123 abc 123")
+
+  let assert Ok(re) = regex.from_string("[a-z]+")
+  regex.replace_n(in: "abc 123 abc 123 abc 123 abc 123", each: re, with: "xyz", up_to: 2)
+  |> should.equal("abc xyz abc xyz abc 123 abc 123")
+}
+
+// pub fn replace_map_test() {
+//   let assert Ok(re) = regex.from_string("l")
+//   regex.replace(in: "Hello, world!", each: re, with: "x")
+//   |> should.equal("Hexxo, worxd!")
+
+//   let assert Ok(re) = regex.from_string("xyz")
+//   regex.replace(in: "Hello, world!", each: re, with: "Gleam")
+//   |> should.equal("Hello, world!")
+
+//   let assert Ok(re) = regex.from_string("Gleam")
+//   regex.replace(in: "", each: re, with: "Rust")
+//   |> should.equal("")
+
+//   let assert Ok(re) = regex.from_string("Gleam")
+//   regex.replace(in: "I love Gleam!", each: re, with: "")
+//   |> should.equal("I love !")
+// }
