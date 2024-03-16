@@ -259,14 +259,6 @@ regex_scan(Regex, String) ->
 regex_replace(String, Regex, Replacement) ->
     re:replace(String, Regex, Replacement, [global, {return, binary}]).
 
-regex_replace_n(String, Regex, Replacement, N) ->
-    Options = [global, {return, binary}, {replace, N}],
-    re:replace(String, Regex, Replacement, Options).
-
-regex_replace_map(String, Regex, ReplaceFun) ->
-    Options = [global, {return, binary}],
-    re:replace(String, Regex, fun(Match) -> ReplaceFun(Match) end, Options).
-
 base_decode64(S) ->
     try {ok, base64:decode(S)}
     catch error:_ -> {error, nil}
